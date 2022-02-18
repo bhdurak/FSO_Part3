@@ -65,6 +65,10 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   if(Object.keys(request.body).length > 0){
     if(request.body.name && request.body.number){
+      if(persons.find(p => p.name === request.body.name)){
+        response.status(400).json({error:'Name must be unique!'})
+        return
+      }
       const person = {
         id: Math.ceil(Math.random()*10000000),
         name: request.body.name,
@@ -74,12 +78,12 @@ app.post('/api/persons', (request, response) => {
       response.json(person)
     }
     else{
-      response.status(400).send('Name and/or number not provided!')
+      response.status(400).json({error:'Name and/or number is missing!'})
       return
     }
   }
   else {
-    response.status(400).send('Request Body not provided!')
+    response.status(400).json({error:'Request Body not provided!'})
   }
 })
 
