@@ -27,10 +27,6 @@ let persons = [
     }
 ]
 
-const generateId = () => {
-  return persons.length > 0 ? Math.max(...persons.map(p => p.id)) + 1 : 1
-}
-
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
@@ -70,7 +66,7 @@ app.post('/api/persons', (request, response) => {
   if(Object.keys(request.body).length > 0){
     if(request.body.name && request.body.number){
       const person = {
-        id: generateId(),
+        id: Math.ceil(Math.random()*10000000),
         name: request.body.name,
         number: request.body.number
       }
